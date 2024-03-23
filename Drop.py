@@ -4,39 +4,10 @@ import numpy as np
 import pywinauto
 import pyautogui
 
-def polaris_rose():
-    pywinauto.mouse.move(coords=((720, 158)))
-    pyautogui.write("Box_of_Polaris_Rose")
-def cyan_crystal():
-    pywinauto.mouse.move(coords=((720, 158)))
-    pyautogui.write("Cyan crystal")
-def gold():
-    pywinauto.mouse.move(coords=((720, 158)))
-    pyautogui.write("gold")
-def copper():
-    pywinauto.mouse.move(coords=((720, 158)))
-    pyautogui.write("Stack_of_Industrial_Coil")
-def craft(haystack_img, detmansoker, threshold=0.7):
 
+def drop(haystack_img,needle_img,  threshold=0.7):
     # run the OpenCV algorithm
-    if detmansoker == "silverToGold":
-        needle_img = "silverToGold.png"
-        gold()
-    if detmansoker == "CoinsToNuggets":
-        needle_img = "CoinsToNuggets.png"
-        gold()
-    if detmansoker == "NuggetToIngot":
-        needle_img = "NuggetsToIngots.png"
-        gold()
-    if detmansoker == "polarisRoseBox":
-        needle_img = ("polarisRoseBox.png")
-        polaris_rose()
-    if detmansoker == "cyanCrystalBox":
-        needle_img = "cyanCrystalBox.png"
-        cyan_crystal()
-    if detmansoker == "Copper":
-        needle_img = "Cropped copper stack of industrial.png"
-        copper()
+    #Saker som ska droppas: Broken gasmask, military drive, benedict penguin, Cotton wool
 
     needle_img = cv.imread(needle_img, cv.IMREAD_UNCHANGED)
     method = cv.TM_CCOEFF_NORMED
@@ -66,12 +37,13 @@ def craft(haystack_img, detmansoker, threshold=0.7):
         pyautogui.keyUp('ctrl')
     else:
         print(str(max_val) + "\n")
-
     pyautogui.click("esc")
     pyautogui.mouseDown()
     time.sleep(1.9)
     pyautogui.mouseUp()
     time.sleep(5)
+
+
 
 
 '''

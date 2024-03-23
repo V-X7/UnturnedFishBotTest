@@ -10,7 +10,7 @@ def GetScreenShot():
     # 1366 x 768
     # get the window image data
 
-    hwnd = win32gui.FindWindow(None, 'Unturned')
+    hwnd = win32gui.FindWindow(None, 'python')
 
     # Uncomment the following line if you use a high DPI display or >100% scaling size
     # windll.user32.SetProcessDPIAware()
