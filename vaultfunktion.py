@@ -13,7 +13,7 @@ hitta = Vision("fish14.png")
 guld_ingot_hsv_filter = HsvFilter(19, 77, 174, 26, 155, 205, 0, 0, 0, 0)
 
 def vault():
-    screenshot = cv.imread("allt loot bild.png")
+    screenshot = cv.imread("StoraBilder/allt loot bild.png")
     screenshot = screenshot[0:1080, 0:1150]
     screenshot = hitta.apply_hsv_filter(screenshot, guld_ingot_hsv_filter)
     threshold = 0.8
@@ -24,7 +24,7 @@ def vault():
     time.sleep(0.2)'''
 
 
-    needle = cv.imread("goldIngotpaHSV.png")
+    needle = cv.imread("VaultBilder/goldIngotpaHSV.png")
     needle_w = needle.shape[1]
     needle_h = needle.shape[0]
 

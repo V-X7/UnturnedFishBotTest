@@ -25,7 +25,7 @@ while(True):
 
     # get an updated image of the game
     #screenshot = GetScreenShot()
-    screenshot = cv.imread("allt loot bild.png", cv.IMREAD_UNCHANGED)
+    screenshot = cv.imread("StoraBilder/allt loot bild.png", cv.IMREAD_UNCHANGED)
     hsvscreenshot = hitta.apply_hsv_filter(screenshot)
 
     cv.imshow("hj", hsvscreenshot)
