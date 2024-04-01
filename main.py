@@ -12,10 +12,11 @@ from PIL import Image
 from vaultfunktion import vault
 from CrafterVision import craft
 from Drop import drop
+from CraftWindowCapture import GetWholeScreenShot
+import EasyOCR
+from EasyOCR import CraftOCR
 '''
-Ist'älelt fär att kära match template en gång till klåte loopen köra en gång opch om den kommer in i debn kloopen igen så kan det dra i spöet
-
-Så första gågen den kommer in loopen så höjer den en counter, om de6t  jhänder två gånger iorad så drar den in spöet, om det inte händer två gånger irad så sätter cen counter till noll
+lägg till en setup som ser till att hide uncraftablde blueprints är på och att scrollen är helt rätt
 '''
 hitta = Vision("fish14.png")
 loop_time = time.time()
@@ -24,14 +25,19 @@ vault_tid = time.time()
 craft_tid = time.time()
 drop_tid = time.time()
 #hitta.init_control_gui()
+hsv_filter_for_gold_text = HsvFilter(0,0,119,138,8,255,0,0,0,0)
 
 hsv_filter = HsvFilter(73, 50,0,117,255,255,0,0,0,0)
+guld_ingot_hsv_filter = HsvFilter(19, 77, 174, 26, 155, 205, 0, 0, 0, 0)
+
+
 
 time.sleep(3)
 pyautogui.mouseDown()
 time.sleep(1.9)
 pyautogui.mouseUp()
 time.sleep(5)
+
 
 while True:
     screenshot = GetScreenShot()
@@ -41,7 +47,7 @@ while True:
     output_image = hitta.apply_hsv_filter(screenshot, hsv_filter)
 
     #hitta.find(output_image, 0.75, "rectangles", 1)
-    cv.imshow("screenshot", output_image)
+    #cv.imshow("screenshot", output_image)
 
     print("Fps {}".format(1/(time.time()- loop_time)))
     loop_time = time.time()
@@ -50,31 +56,96 @@ while True:
 
 
    #Körr sell py efter l¨ång tid
-    if (sälj_tid + 600) < time.time():
+    if (sälj_tid + 240) < time.time():
         pyautogui.click()
         sälja()
         sälj_tid = time.time()
+        now = time.ctime(int(time.time()))
+        print("Sålde fiskarna klockan " + str(now))
 
-    if (drop_tid + 600) < time.time():
+    if (drop_tid + 480) < time.time():
         pyautogui.click()
-        drop()
-        pyautogui.scroll(-500)
-        drop()
-        pyautogui.scroll(500)
+        pyautogui.press("tab")
+        time.sleep(0.2)
+        screenshot = GetWholeScreenShot()
+        drop(screenshot, "DropBilder/brokenGasmaskCrop.png")
+        drop(screenshot, "DropBilder/benedictPenguinCrop.png")
+        drop(screenshot, "DropBilder/cottonWoolCrop.png")
+        drop(screenshot, "DropBilder/militaryDriveCrop.png")
+
+        for x in range(30):
+            pyautogui.scroll(-1)
+        time.sleep(0.1)
+        screenshot = GetWholeScreenShot()
+        drop(screenshot, "DropBilder/brokenGasmaskCrop.png")
+        drop(screenshot, "DropBilder/benedictPenguinCrop.png")
+        drop(screenshot, "DropBilder/cottonWoolCrop.png")
+        drop(screenshot, "DropBilder/militaryDriveCrop.png")
+
+        for x in range(30):
+            pyautogui.scroll(1)
+
         drop_tid = time.time()
+        now = time.ctime(int(time.time()))
+        print("droppade saker klockan " + str(now))
+        pyautogui.press("esc")
+        pyautogui.mouseDown()
+        time.sleep(1.9)
+        pyautogui.mouseUp()
+        time.sleep(5)
 
-    if (craft_tid + 1800) < time.time():
+    if (craft_tid + 720) < time.time():
         pyautogui.click()
-        craft()
+        pyautogui.press("y")
+        CraftOCR("silverToGold")
+        CraftOCR("CoinsToNugget")
+        CraftOCR("NuggetToIngot")
+        CraftOCR("polarisRoseBox")
+        CraftOCR("cyanCrystalBox")
+        CraftOCR("CopperCoil")
+        CraftOCR("CopperStack")
+        CraftOCR("tape")
+
         craft_tid = time.time()
+        now = time.ctime(int(time.time()))
+        print("Craftade saker klockan " + str(now))
+        pyautogui.press("esc")
+        pyautogui.mouseDown()
+        time.sleep(1.9)
+        pyautogui.mouseUp()
+        time.sleep(5)
 
-    if (vault_tid + 3600) < time.time():
+    if (vault_tid + 1440) < time.time():
+
         pyautogui.click()
-        vault()
-        pyautogui.scroll(-500)
-        vault()
-        pyautogui.scroll(500)
+
+        pyautogui.press("enter")
+        time.sleep(0.1)
+        pyautogui.write("/vault")
+        pyautogui.press("enter")
+        time.sleep(0.2)
+
+        vault("VaultBilder/goldIngotpaHSV.png")
+        vault("VaultBilder/PolarisRoseBoxIconCropped.png")
+        vault("VaultBilder/cyanCrystalBoxIconCropped.png")
+        
+        for x in range(30):
+            pyautogui.scroll(-1)
+        vault("VaultBilder/goldIngotpaHSV.png")
+        vault("VaultBilder/PolarisRoseBoxIconCropped.png")
+        vault("VaultBilder/cyanCrystalBoxIconCropped.png")
+        for x in range(30):
+            pyautogui.scroll(1)
+
         vault_tid = time.time()
+        now = time.ctime(int(time.time()))
+        print("Vaultade saker klockan " + str(now))
+        pyautogui.press("esc")
+        pyautogui.mouseDown()
+        time.sleep(1.9)
+        pyautogui.mouseUp()
+        time.sleep(5)
+
 
 
     if cv.waitKey(1) == ord("q"):

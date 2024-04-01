@@ -4,29 +4,44 @@ import pyautogui
 import pywinauto
 import pywinauto
 import time
-from CraftWindowCapture import GetScreenShot
+from CraftWindowCapture import GetWholeScreenShot
 from hsvfilter import HsvFilter
+from PIL import Image
+
 
 from vision import Vision
 hitta = Vision("fish14.png")
 #hitta.init_control_gui()
 guld_ingot_hsv_filter = HsvFilter(19, 77, 174, 26, 155, 205, 0, 0, 0, 0)
 
-def vault():
-    screenshot = cv.imread("StoraBilder/allt loot bild.png")
-    screenshot = screenshot[0:1080, 0:1150]
-    screenshot = hitta.apply_hsv_filter(screenshot, guld_ingot_hsv_filter)
+def vault(needle):
+
     threshold = 0.8
-    '''pyautogui.click("enter")
-    time.sleep(0.1)
-    pyautogui.write("/vault")
-    pyautogui.click("enter")
-    time.sleep(0.2)'''
+
+    screenshot = GetWholeScreenShot()
+    screenshot = screenshot[70:1080, 430:1150]
 
 
-    needle = cv.imread("VaultBilder/goldIngotpaHSV.png")
+    if needle == "VaultBilder/goldIngotpaHSV.png":
+        hsv = cv.cvtColor(screenshot, cv.COLOR_BGR2HSV)
+
+        lower = np.array([guld_ingot_hsv_filter.hMin, guld_ingot_hsv_filter.sMin, guld_ingot_hsv_filter.vMin])
+        upper = np.array([guld_ingot_hsv_filter.hMax, guld_ingot_hsv_filter.sMax, guld_ingot_hsv_filter.vMax])
+        # Apply the thresholds
+        mask = cv.inRange(hsv, lower, upper)
+        mask_ = Image.fromarray(mask)
+        result = cv.bitwise_and(hsv, hsv, mask=mask)
+
+        screenshot = cv.cvtColor(result, cv.COLOR_HSV2BGR)
+
+
+
+    needle = cv.imread(needle, cv.IMREAD_UNCHANGED)
     needle_w = needle.shape[1]
     needle_h = needle.shape[0]
+    needle = cv.cvtColor(needle, cv.COLOR_RGBA2RGB)
+
+
 
     result = cv.matchTemplate(screenshot, needle, cv.TM_CCOEFF_NORMED)
 
@@ -69,9 +84,11 @@ def vault():
             # Determine the center position
             center_x = x + int(w / 2)
             center_y = y + int(h / 2)
-            #pywinauto.mouse.move(coords=(center_x, center_y))
-            #time.sleep(0.05)
-            #pyautogui.click(button="right")
+            pyautogui.keyDown('ctrl')
+            pywinauto.mouse.move(coords=((center_x + 430), (center_y + 70)))
+            time.sleep(0.05)
+            pyautogui.click(button="right")
+            pyautogui.keyUp('ctrl')
             # Save the points
             points.append((center_x, center_y))
 
@@ -84,11 +101,7 @@ def vault():
 
 
 
-    pyautogui.click("esc")
-    pyautogui.mouseDown()
-    time.sleep(1.9)
-    pyautogui.mouseUp()
-    time.sleep(5)
+
 
         # cv.imwrite('result_click_point.jpg', screenshot)
 

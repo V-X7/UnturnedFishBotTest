@@ -6,11 +6,11 @@ import numpy as np
 from PIL import Image
 import cv2 as cv
 from PIL import ImageOps
-def GetScreenShot():
+def GetWholeScreenShot():
     # 1366 x 768
     # get the window image data
 
-    hwnd = win32gui.FindWindow(None, 'python')
+    hwnd = win32gui.FindWindow(None, 'Unturned')
 
     # Uncomment the following line if you use a high DPI display or >100% scaling size
     # windll.user32.SetProcessDPIAware()
@@ -61,14 +61,9 @@ def GetScreenShot():
     mfcDC.DeleteDC()
     win32gui.ReleaseDC(hwnd, hwndDC)
 
-    x0 = 0
-    y0 = 0
-    x1 = 1920
-    y1 = 1080
-    new_img = img[y0:y1, x0:x1]
 
 
-    return new_img
+    return img
 
 
 

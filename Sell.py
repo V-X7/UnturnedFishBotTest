@@ -5,7 +5,6 @@ import keyboard as k
 
 
 def sälja():
-    pyautogui.click()
     time.sleep(3.5)
     lista = [172, 243, 359, 467, 579, 682, 790, 908, 993]
     pyautogui.press("e")
@@ -15,7 +14,7 @@ def sälja():
     pyautogui.press("f")
     time.sleep(0.2)
 
-    pywinauto.mouse.move(coords=(911, 820))
+    pywinauto.mouse.move(coords=(911, 854))
     pyautogui.click()
     pywinauto.mouse.move(coords=(366, 0))
     pyautogui.keyDown("ctrl")
@@ -37,6 +36,7 @@ def sälja():
     pyautogui.mouseDown()
     time.sleep(1.9)
     pyautogui.mouseUp()
+    time.sleep(5)
 
 
 
